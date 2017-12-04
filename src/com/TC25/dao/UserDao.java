@@ -17,6 +17,8 @@ public interface UserDao {
 	public User getUserByUserAcc(String userAcc) throws SQLException;
 
 	public boolean isUserAccExist(String userAcc) throws SQLException;
+	
+	public boolean addUserToDataBase(User u) throws SQLException;
 }
 
 

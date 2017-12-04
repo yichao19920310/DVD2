@@ -40,21 +40,34 @@ public class UserBizImpl implements UserBiz {
 		
 	}
 	@Override
-	public boolean checkUserAcc(String userAcc) throws SQLException {
+	public boolean checkUserAcc(String userAcc) {
 		if (userAcc == null || userAcc.length() == 0) {
 			return false;
 		}
 		Pattern p = Pattern.compile("^[a-zA-Z]{1}[a-zA-Z0-9_.]{5,15}");
 		Matcher m = p.matcher(userAcc);
 		UserDao ud = new UserDaoImpl();
-		if (m.matches() && !ud.isUserAccExist(userAcc)) {
-			return true;
+		try {
+			if (m.matches() && !ud.isUserAccExist(userAcc)) {
+				return true;
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
 		}
 		return false;
 	}
 	
 	public boolean userRegist(String userAcc, String userPwd, String userName, String userPwdTip) {
-		return false;
+		UserDao ud = new UserDaoImpl();
+		User u = new User(userAcc,userName,userPwd,userPwdTip);
+		boolean isSuccess = false;
+		try {
+			isSuccess = ud.addUserToDataBase(u);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isSuccess;
 	}
 	@Override
 	public boolean checkUserPwd(String userPwd) {
@@ -68,5 +81,6 @@ public class UserBizImpl implements UserBiz {
 		}
 		return false;
 	}
+	
 
 }

@@ -69,6 +69,29 @@ public class UserDaoImpl implements UserDao {
 		return false;
 	}
 
+
+	/* (·Ç Javadoc)  
+	 * <p>Title: addUserToDataBase</p>  
+	 * <p>Description: </p>  
+	 * @param u
+	 * @return
+	 * @throws SQLException  
+	 * @see com.TC25.dao.UserDao#addUserToDataBase(com.TC25.bean.User)  
+	 */  
+	@Override
+	public boolean addUserToDataBase(User u) throws SQLException {
+		String sql = "insert into UserList (userId,userAcc,userPwd,userName,userPwdTip)values(USERID_SEQ.nextval,?,?,?,?)";
+		mStatement = mConnection.prepareStatement(sql);
+		mStatement.setString(1, u.getUserAcc());
+		mStatement.setString(2, u.getUserPwd());
+		mStatement.setString(3, u.getUserName());
+		mStatement.setString(4, u.getUserPwdTip());
+		if(0 == mStatement.executeUpdate()) {
+			return false;
+		}
+		return true;
+	}
+
 }
 
 

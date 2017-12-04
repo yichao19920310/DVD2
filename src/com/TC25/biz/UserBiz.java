@@ -13,7 +13,9 @@ public interface UserBiz {
 	 */
 	public boolean userLogin(String userAcc,String userPwd) ;
 	
-	public boolean checkUserAcc(String userAcc) throws SQLException;
+	public boolean checkUserAcc(String userAcc);
 
 	public boolean checkUserPwd(String userPwd);
+	
+	public boolean userRegist(String userAcc, String userPwd, String userName, String userPwdTip);
 }
