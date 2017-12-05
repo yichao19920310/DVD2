@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import com.TC25.bean.DVD;
 import com.TC25.bean.User;
+import com.TC25.bizImpl.UserBizImpl;
 import com.TC25.dao.UserDao;
 import com.TC25.tools.DBHelper;
 
@@ -85,6 +88,69 @@ public class UserDaoImpl implements UserDao {
 		mStatement.setString(2, u.getUserPwd());
 		mStatement.setString(3, u.getUserName());
 		mStatement.setString(4, u.getUserPwdTip());
+		if(0 == mStatement.executeUpdate()) {
+			return false;
+		}
+		return true;
+	}
+
+
+	/* (·Ç Javadoc)  
+	 * <p>Title: getAllDvd</p>  
+	 * <p>Description: </p>  
+	 * @return  
+	 * @see com.TC25.dao.UserDao#getAllDvd()  
+	 */  
+	@Override
+	public ArrayList<DVD> getDvdList(int i) throws SQLException {
+		ArrayList<DVD> dvdList = new ArrayList<>();
+		String sql = null;
+		if(i == 1) {
+			sql = "select * from DVDList";
+		}else if(i == 2) {
+			sql = "select * from DVDList where DVDSTATUS = 1";
+		}else {
+			sql = "select * from DVDList where DVDSTATUS = 2";
+		}
+		
+		
+		mStatement = mConnection.prepareStatement(sql);
+		rSet = mStatement.executeQuery();
+		while(rSet.next()) {
+			DVD dvd = new DVD();
+			dvd.setDvdId(rSet.getInt("DVDID"));
+			dvd.setDvdName(rSet.getString("DVDNAME"));
+			dvd.setDvdDate(rSet.getDate("DVDDATE"));
+			dvd.setDvdLendCount(rSet.getInt("DVDLENDCOUNT"));
+			dvd.setDvdStatus(rSet.getInt("DVDSTATUS"));
+			dvdList.add(dvd);
+		}
+		return dvdList;
+	}
+
+
+	/* (·Ç Javadoc)  
+	 * <p>Title: lendDvd</p>  
+	 * <p>Description: </p>  
+	 * @param id
+	 * @return  
+	 * @see com.TC25.dao.UserDao#lendDvd(int)  
+	 */  
+	@Override
+	public boolean lendDvd(int id) throws SQLException {
+		String sql1 = "update DVDList set DVDStatus = 2 where DVDStatus = 1 and DVDID = ?";
+		mStatement = mConnection.prepareStatement(sql1);
+		mStatement.setInt(1, id);
+		if(0 == mStatement.executeUpdate()) {
+			return false;
+		}
+		String sql2 = "insert into LendRecordList (lrId,lrName,DVDId,DVDName,LendDate,UserID)"
+				+ " values(lrid_seq,'AA'|| (select substr(cast(dbms_random.value as varchar2(38)),3,20) from dual)||(SELECT lpad(?,4,0) FROM dual),?,(select dvdname from dvdlist where dvdid = ?),SYSDATE,? ";
+		mStatement = mConnection.prepareStatement(sql2);
+		mStatement.setInt(1, id);
+		mStatement.setInt(2, id);
+		mStatement.setInt(3, id);
+		mStatement.setInt(4, UserBizImpl.mUser.getUserId());
 		if(0 == mStatement.executeUpdate()) {
 			return false;
 		}

@@ -29,10 +29,10 @@ public class DVD {
 	public void setDvdLendCount(int dvdLendCount) {
 		this.dvdLendCount = dvdLendCount;
 	}
-	public String getDvdLendDate() {
-		return getDvdLendDate();
+	public Date getDvdDate() {
+		return dvdDate;
 	}
-	public void setDvdLendDate(Date dvdDate) {
+	public void setDvdDate(Date dvdDate) {
 		this.dvdDate = dvdDate;
 	}
 	public int isDvdStatus() {

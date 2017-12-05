@@ -1,7 +1,9 @@
 package com.TC25.biz;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import com.TC25.bean.DVD;
 import com.TC25.bean.User;
 
 public interface UserBiz {
@@ -22,4 +24,35 @@ public interface UserBiz {
 	public boolean userRegist(String userAcc, String userPwd, String userName, String userPwdTip);
 
 	public void getUserInfo();
+
+	/**
+	 * @return   
+	 * @Title: showAllDvd  
+	 * @Description: TODO(这里用一句话描述这个方法的作用)  
+	 * @param     参数  
+	 * @return void    返回类型  
+	 * @throws  
+	 */  
+	public ArrayList<DVD> showDvd(int i);
+
+	/**
+	 * @param id   
+	 * @Title: lendDvd  
+	 * @Description: TODO(这里用一句话描述这个方法的作用)  
+	 * @param     参数  
+	 * @return void    返回类型  
+	 * @throws  
+	 */  
+	public boolean lendDvd(int id);
+
+	/**  
+	 * @Title: checkDvdIdLendable  
+	 * @Description: TODO(这里用一句话描述这个方法的作用)  
+	 * @param @param id
+	 * @param @param dvdList    参数  
+	 * @return void    返回类型  
+	 * @throws  
+	 */  
+	public boolean checkDvdIdLendable(int id, ArrayList<DVD> dvdList);
+
 }

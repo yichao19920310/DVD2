@@ -5,20 +5,33 @@ public class ShowDvdView extends View {
 	@Override
 	public View showView() {
 		System.out.println("=====>>>查看DVD");
-		showMenu();
-		int choose = iT.getInt();
-		switch(choose) {
-		case 1:
+		while(true) {
+			showMenu();
 			
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
+			int choose = iT.getInt();
+			
+			switch(choose) {
+			case 1:
+				System.out.println("=====>>>查看所有DVD");
+				ub.showDvd(1);
+				break;
+			case 2:
+				System.out.println("=====>>>查看可借DVD");
+				ub.showDvd(2);
+				break;
+			case 3:
+				System.out.println("=====>>>查看不可借DVD");
+				ub.showDvd(3);
+				break;
+			case 0:
+				return mView = new UserMenuView();
+			default:
+				break;
+				
+			}
 		}
-		return mView;
+		
+		
 	}
 	
 	public void showMenu() {
