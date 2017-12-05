@@ -10,10 +10,10 @@ public class MainView extends View {
 	}
 	
 	public void showWelcome() {
-		for(int i = 0; i < 100; i++) {
-			if(i == 49) {
-				System.out.println();
-				System.out.println("\t欢迎使用DVD管理器");
+		for(int i = 0; i <= 100; i++) {
+			if(i == 50) {
+				System.out.println("\n");
+				System.out.println("\t\t欢迎使用DVD管理器");
 				System.out.println();
 			}else {
 				System.out.print("*");

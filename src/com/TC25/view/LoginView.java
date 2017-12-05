@@ -15,7 +15,7 @@ public class LoginView extends View{
 		System.out.println("请输入用户密码:");
 		String userPwd = iT.getString();
 		
-		UserBiz ub = new UserBizImpl();
+		
 		if(ub.userLogin(userAcc, userPwd)) {
 			//--登录成功
 			System.out.println("登录成功!");

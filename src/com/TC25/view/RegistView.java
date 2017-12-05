@@ -7,7 +7,6 @@ import com.TC25.bizImpl.UserBizImpl;
 
 public class RegistView extends View {
 
-	UserBiz ub = new UserBizImpl();
 	@Override
 	public View showView() {
 		System.out.println("=====>>>用户注册");
@@ -89,8 +88,8 @@ public class RegistView extends View {
 	 */  
 	private boolean isConfirm(String userAcc, String userPwd, String userName, String userPwdTip) {
 		System.out.println("请确认您的注册信息:");
-		System.out.println("用户账号:"+ userAcc +"\t用户密码"+ userPwd);
-		System.out.println("用户昵称:"+ userName +"\t密码提示"+ userPwdTip);
+		System.out.println("用户账号:"+ userAcc +"\t用户密码:"+ userPwd);
+		System.out.println("用户昵称:"+ userName +"\t密码提示:"+ userPwdTip);
 		System.out.println("1:确认 2:取消");
 		int choose = iT.getInt();
 		if(choose == 1) {
@@ -209,8 +208,8 @@ public class RegistView extends View {
 		int choose = iT.getInt();
 		if (choose == 1) {
 			return 3;
-		}
-		
-		return 4;
+		}else {
+			return isNeedTip();
+		}		
 	}
 }

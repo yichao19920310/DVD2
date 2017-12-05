@@ -2,6 +2,8 @@ package com.TC25.biz;
 
 import java.sql.SQLException;
 
+import com.TC25.bean.User;
+
 public interface UserBiz {
 
 	
@@ -18,4 +20,6 @@ public interface UserBiz {
 	public boolean checkUserPwd(String userPwd);
 	
 	public boolean userRegist(String userAcc, String userPwd, String userName, String userPwdTip);
+
+	public void getUserInfo();
 }

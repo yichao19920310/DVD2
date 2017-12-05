@@ -11,6 +11,8 @@ import com.TC25.daoImpl.UserDaoImpl;
 
 public class UserBizImpl implements UserBiz {
 
+	public static User mUser;
+	UserDao ud = new UserDaoImpl();
 	@Override
 	public boolean userLogin(String userAcc, String userPwd) {
 	
@@ -18,20 +20,19 @@ public class UserBizImpl implements UserBiz {
 			return false;
 		}
 		
-		UserDao ud = new UserDaoImpl();
-		User u = null;
+		
 		try {
-			u = ud.getUserByUserAcc(userAcc);
+			mUser = ud.getUserByUserAcc(userAcc);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (u == null) {
+		if (mUser == null) {
 			return false;
 		}
 		
 		//--开始验证密码
-		if(userPwd.equals(u.getUserPwd())) {
+		if(userPwd.equals(mUser.getUserPwd())) {
 			return true;
 		}
 		return false;
@@ -46,7 +47,6 @@ public class UserBizImpl implements UserBiz {
 		}
 		Pattern p = Pattern.compile("^[a-zA-Z]{1}[a-zA-Z0-9_.]{5,15}");
 		Matcher m = p.matcher(userAcc);
-		UserDao ud = new UserDaoImpl();
 		try {
 			if (m.matches() && !ud.isUserAccExist(userAcc)) {
 				return true;
@@ -59,7 +59,6 @@ public class UserBizImpl implements UserBiz {
 	}
 	
 	public boolean userRegist(String userAcc, String userPwd, String userName, String userPwdTip) {
-		UserDao ud = new UserDaoImpl();
 		User u = new User(userAcc,userName,userPwd,userPwdTip);
 		boolean isSuccess = false;
 		try {
@@ -80,6 +79,16 @@ public class UserBizImpl implements UserBiz {
 			return true;
 		}
 		return false;
+	}
+	@Override
+	public void getUserInfo() {
+		try {
+			mUser = ud.getUserByUserAcc(mUser.getUserAcc());
+			System.out.println(mUser.toString());			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 

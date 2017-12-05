@@ -41,18 +41,17 @@ public class UserDaoImpl implements UserDao {
 		 * 如果查的到则结果集中有数据.否则结果集为null
 		 */
 		rSet = mStatement.executeQuery();
-		if (rSet == null) {
+		if (!rSet.next()) {
 			return null;
 		}
-		User u = new User();
-		while (rSet.next()) {			
-			u.setUserId(rSet.getInt("USERID"));	
-			u.setUserAcc(rSet.getString("USERACC"));
-			u.setUserName(rSet.getString("USERNAME"));	
-			u.setUserPwd(rSet.getString("USERPWD"));
-			u.setUserPwdTip(rSet.getString("USERPWDTIP"));
-			u.setUserStatus(rSet.getInt("USERSTATUS"));
-		}		
+		User u = new User();				
+		u.setUserId(rSet.getInt("USERID"));	
+		u.setUserAcc(rSet.getString("USERACC"));
+		u.setUserName(rSet.getString("USERNAME"));	
+		u.setUserPwd(rSet.getString("USERPWD"));
+		u.setUserPwdTip(rSet.getString("USERPWDTIP"));
+		u.setUserStatus(rSet.getInt("USERSTATUS"));
+			
 		return u;
 	}
 
@@ -63,7 +62,7 @@ public class UserDaoImpl implements UserDao {
 		mStatement = mConnection.prepareStatement(sql);
 		mStatement.setString(1, userAcc);
 		rSet = mStatement.executeQuery();
-		if (rSet == null) {
+		if (rSet.next()) {
 			return true;
 		}
 		return false;
