@@ -14,7 +14,9 @@ public class User implements Serializable{
 	private String userName;
 	private String userPwd;
 	private String userPwdTip;
+	//1 正常 2黑户 0管理员
 	private int userStatus;
+	
 	public int getUserId() {
 		return userId;
 	}

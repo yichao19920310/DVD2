@@ -44,6 +44,34 @@ public interface UserDao {
 
 	public ArrayList<DVD> getDvdByUser() throws SQLException;
 
+	/**  
+	 * @Title: RetuDvd  
+	 * @Description: TODO(这里用一句话描述这个方法的作用)  
+	 * @param @param id    参数  
+	 * @return void    返回类型  
+	 * @throws  
+	 */  
+	public boolean RetuDvd(int id) throws SQLException;
+
+	/**
+	 * @throws SQLException   
+	 * @Title: addDvd  
+	 * @Description: TODO(这里用一句话描述这个方法的作用)  
+	 * @param @param dvdName    参数  
+	 * @return void    返回类型  
+	 * @throws  
+	 */  
+	public boolean addDvd(String dvdName) throws SQLException;
+
+	/**  
+	 * @Title: subDvd  
+	 * @Description: TODO(这里用一句话描述这个方法的作用)  
+	 * @param @param id    参数  
+	 * @return void    返回类型  
+	 * @throws  
+	 */  
+	public boolean subDvd(int id) throws SQLException;
+
 
 }
 

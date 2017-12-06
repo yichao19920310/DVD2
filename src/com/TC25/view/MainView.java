@@ -24,8 +24,9 @@ public class MainView extends View {
 	 
 	public void showMenu() {
 		System.out.println("=====>>>主界面");
-		System.out.println("1.登录");
-		System.out.println("2.注册");
+		System.out.println("1.用户登录");
+		System.out.println("2.用户注册");
+		System.out.println("9.管理员登录");
 		System.out.println("0.退出");
 		int choose = iT.getInt();
 		switch(choose) {
@@ -34,6 +35,9 @@ public class MainView extends View {
 			break;
 		case 2:
 			mView = new RegistView();
+			break;
+		case 9:
+			mView = new AdminLoginView();
 			break;
 		case 0:
 			mView = null;

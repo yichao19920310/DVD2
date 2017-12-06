@@ -106,7 +106,7 @@ public class UserDaoImpl implements UserDao {
 		ArrayList<DVD> dvdList = new ArrayList<>();
 		String sql = null;
 		if(i == 1) {
-			sql = "select * from DVDList";
+			sql = "select * from DVDList where DVDSTATUS = 1 or DVDSTATUS = 2";
 		}else if(i == 2) {
 			sql = "select * from DVDList where DVDSTATUS = 1";
 		}else {
@@ -162,7 +162,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public ArrayList<DVD> getDvdByUser() throws SQLException {
 		String sql = "select l.dvdid,l.dvdname from LENDRECORDLIST l " 
-				+"INNER JOIN userlist u on u.userid = l.USERID and u.userid = ? ";
+				+"INNER JOIN userlist u on u.userid = l.USERID and u.userid = ? and l.lrstatus = 0 ";
 		mStatement = mConnection.prepareStatement(sql);
 		mStatement.setInt(1, UserBizImpl.mUser.getUserId());
 		rSet = mStatement.executeQuery();
@@ -177,6 +177,72 @@ public class UserDaoImpl implements UserDao {
 			return dvdList;
 		}
 		return null;
+	}
+
+
+	/* (·Ç Javadoc)  
+	 * <p>Title: RetuDvd</p>  
+	 * <p>Description: </p>  
+	 * @param id
+	 * @return
+	 * @throws SQLException  
+	 * @see com.TC25.dao.UserDao#RetuDvd(int)  
+	 */  
+	@Override
+	public boolean RetuDvd(int id) throws SQLException {
+		String sql1 = "update dvdlist set dvdStatus = 1 where dvdid = ?";
+		mStatement = mConnection.prepareStatement(sql1);
+		mStatement.setInt(1, id);
+		if(0 == mStatement.executeUpdate()) {
+			return false;
+		}
+		String sql2 = "update lendrecordlist set lrstatus = 1 where dvdid = ? and lrstatus = 0";
+		mStatement = mConnection.prepareStatement(sql2);
+		mStatement.setInt(1, id);
+		if(0 == mStatement.executeUpdate()) {
+			return false;
+		}
+		return true;
+	}
+
+
+	/* (·Ç Javadoc)  
+	 * <p>Title: addDvd</p>  
+	 * <p>Description: </p>  
+	 * @param dvdName
+	 * @return  
+	 * @see com.TC25.dao.UserDao#addDvd(java.lang.String)  
+	 */  
+	@Override
+	public boolean addDvd(String dvdName) throws SQLException {
+		String sql = "insert into dvdlist (dvdid,dvdname,dvddate) values (dvdid_seq.nextval,?,SYSDATE)";
+		mStatement = mConnection.prepareStatement(sql);
+		mStatement.setString(1, dvdName);
+		if(0 == mStatement.executeUpdate()) {
+			return false;
+		}
+		
+		return true;
+	}
+
+
+	/* (·Ç Javadoc)  
+	 * <p>Title: subDvd</p>  
+	 * <p>Description: </p>  
+	 * @param id
+	 * @return
+	 * @throws SQLException  
+	 * @see com.TC25.dao.UserDao#subDvd(int)  
+	 */  
+	@Override
+	public boolean subDvd(int id) throws SQLException {
+		String sql = "update dvdlist set dvdstatus = 3 where dvdid = ?";
+		mStatement = mConnection.prepareStatement(sql);
+		mStatement.setInt(1, id);
+		if(0 == mStatement.executeUpdate()) {
+			return false;
+		}
+		return true;
 	}
 
 }

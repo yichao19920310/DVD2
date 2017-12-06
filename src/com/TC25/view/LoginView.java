@@ -16,7 +16,7 @@ public class LoginView extends View{
 		String userPwd = iT.getString();
 		
 		
-		if(ub.userLogin(userAcc, userPwd)) {
+		if(ub.userLogin(userAcc, userPwd) && UserBizImpl.mUser.getUserStatus() == 1) {
 			//--登录成功
 			System.out.println("登录成功!");
 			mView = new UserMenuView();

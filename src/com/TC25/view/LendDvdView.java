@@ -14,7 +14,7 @@ public class LendDvdView extends View {
 		System.out.println("请输入要借出的DVDID:");
 		int id = iT.getInt();
 		if(ub.checkDvdIdLendable(id,dvdList)) {
-			System.out.println("确认要借此DVD嘛?(1:确认)");
+			System.out.println("确认要借出此DVD嘛?(1:确认)");
 			int isConfirm = iT.getInt();
 			if(1 == isConfirm) {
 				if(ub.lendDvd(id)) {

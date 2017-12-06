@@ -59,4 +59,23 @@ public interface UserBiz {
 
 	public boolean RetuDvdById(int id);
 
+	/**  
+	 * @Title: addDvd  
+	 * @Description: TODO(这里用一句话描述这个方法的作用)  
+	 * @param @param dvdName    参数  
+	 * @return void    返回类型  
+	 * @throws  
+	 */  
+	public boolean addDvd(String dvdName);
+
+	/**  
+	 * @Title: subDvd  
+	 * @Description: TODO(这里用一句话描述这个方法的作用)  
+	 * @param @param dvdId
+	 * @param @return    参数  
+	 * @return boolean    返回类型  
+	 * @throws  
+	 */  
+	public boolean subDvd(int id);
+
 }

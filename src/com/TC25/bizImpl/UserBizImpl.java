@@ -152,23 +152,86 @@ public class UserBizImpl implements UserBiz {
 	public boolean checkReturnableDvd() {
 		ArrayList<DVD> dvdList = null;
 		try {
-			if((dvdList = ud.getDvdByUser()) != null) {
-				for (DVD dvd : dvdList) {
-					System.out.println("dvdId:"+dvd.getDvdId()+"\tdvdName:"+dvd.getDvdName());
-				}
-			}else {
-				return false;
-			}
+			dvdList = ud.getDvdByUser();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		};
+		}
+		if(dvdList != null) {
+			for (DVD dvd : dvdList) {
+				System.out.println("dvdId:"+dvd.getDvdId()+"\tdvdName:"+dvd.getDvdName());
+			}
+		}else {
+			return false;
+		}
 		return true;
 	}
 	@Override
 	public boolean RetuDvdById(int id) {
-		
-		return false;
+		ArrayList<DVD> dvdList = null;
+		boolean b = false;
+		try {
+			dvdList = ud.getDvdByUser();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(dvdList != null) {
+			for (DVD dvd : dvdList) {
+				if(id == dvd.getDvdId()) {
+					try {
+						b = ud.RetuDvd(id);
+						break;
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			
+		}else {
+			return false;
+		}
+		return b;
+	}
+	/* (·Ç Javadoc)  
+	 * <p>Title: addDvd</p>  
+	 * <p>Description: </p>  
+	 * @param dvdName
+	 * @return  
+	 * @see com.TC25.biz.UserBiz#addDvd(java.lang.String)  
+	 */  
+	@Override
+	public boolean addDvd(String dvdName) {
+		if(dvdName == null || dvdName.length() ==0) {
+			return false;
+		}
+		boolean b = false;
+		try {
+			b = ud.addDvd(dvdName);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+	/* (·Ç Javadoc)  
+	 * <p>Title: subDvd</p>  
+	 * <p>Description: </p>  
+	 * @param dvdId
+	 * @return  
+	 * @see com.TC25.biz.UserBiz#subDvd(int)  
+	 */  
+	@Override
+	public boolean subDvd(int id) {
+		boolean b = false;
+		try {
+			b = ud.subDvd(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 	
 	

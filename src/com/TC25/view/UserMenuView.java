@@ -1,5 +1,7 @@
 package com.TC25.view;
 
+import com.TC25.bizImpl.UserBizImpl;
+
 public class UserMenuView extends View {
 
 	@Override
@@ -32,6 +34,7 @@ public class UserMenuView extends View {
 			mView = new RetuDvdView();
 			break;
 		case 9: 
+			UserBizImpl.mUser = null;
 			mView = new MainView();
 			break;
 		case 0: 
