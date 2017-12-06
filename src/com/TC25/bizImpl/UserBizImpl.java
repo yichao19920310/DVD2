@@ -148,6 +148,28 @@ public class UserBizImpl implements UserBiz {
 		}
 		return false;
 	}
+	@Override
+	public boolean checkReturnableDvd() {
+		ArrayList<DVD> dvdList = null;
+		try {
+			if((dvdList = ud.getDvdByUser()) != null) {
+				for (DVD dvd : dvdList) {
+					System.out.println("dvdId:"+dvd.getDvdId()+"\tdvdName:"+dvd.getDvdName());
+				}
+			}else {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
+		return true;
+	}
+	@Override
+	public boolean RetuDvdById(int id) {
+		
+		return false;
+	}
 	
 	
 

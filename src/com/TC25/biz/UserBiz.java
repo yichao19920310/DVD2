@@ -55,4 +55,8 @@ public interface UserBiz {
 	 */  
 	public boolean checkDvdIdLendable(int id, ArrayList<DVD> dvdList);
 
+	public boolean checkReturnableDvd();
+
+	public boolean RetuDvdById(int id);
+
 }

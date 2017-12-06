@@ -42,6 +42,8 @@ public interface UserDao {
 	 */  
 	public boolean lendDvd(int id) throws SQLException;
 
+	public ArrayList<DVD> getDvdByUser() throws SQLException;
+
 
 }
 

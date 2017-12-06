@@ -138,23 +138,45 @@ public class UserDaoImpl implements UserDao {
 	 */  
 	@Override
 	public boolean lendDvd(int id) throws SQLException {
-		String sql1 = "update DVDList set DVDStatus = 2 where DVDStatus = 1 and DVDID = ?";
+		String sql1 = "update DVDList set DVDStatus = 2,DVDLendCount = (select dvdlendcount from dvdlist where dvdid =?)+1 where DVDStatus = 1 and DVDID = ?";
 		mStatement = mConnection.prepareStatement(sql1);
 		mStatement.setInt(1, id);
+		mStatement.setInt(2, id);
 		if(0 == mStatement.executeUpdate()) {
 			return false;
 		}
-		String sql2 = "insert into LendRecordList (lrId,lrName,DVDId,DVDName,LendDate,UserID)"
-				+ " values(lrid_seq,'AA'|| (select substr(cast(dbms_random.value as varchar2(38)),3,20) from dual)||(SELECT lpad(?,4,0) FROM dual),?,(select dvdname from dvdlist where dvdid = ?),SYSDATE,? ";
+		String sql2 = "insert into LendRecordList (lrId,lrNumber,DVDId,DVDName,LendDate,UserID)"
+				+ " values(lrid_seq.nextval,'AA'|| (substr(cast(dbms_random.value as varchar2(50)),3,4))"
+				+ "||(lpad(cast(lrid_seq.currval as varchar2(50)),4,0)),?,(select dvdname from dvdlist where dvdid = ?),SYSDATE,?) ";
 		mStatement = mConnection.prepareStatement(sql2);
 		mStatement.setInt(1, id);
 		mStatement.setInt(2, id);
-		mStatement.setInt(3, id);
-		mStatement.setInt(4, UserBizImpl.mUser.getUserId());
+		mStatement.setInt(3, UserBizImpl.mUser.getUserId());
 		if(0 == mStatement.executeUpdate()) {
 			return false;
 		}
 		return true;
+	}
+
+
+	@Override
+	public ArrayList<DVD> getDvdByUser() throws SQLException {
+		String sql = "select l.dvdid,l.dvdname from LENDRECORDLIST l " 
+				+"INNER JOIN userlist u on u.userid = l.USERID and u.userid = ? ";
+		mStatement = mConnection.prepareStatement(sql);
+		mStatement.setInt(1, UserBizImpl.mUser.getUserId());
+		rSet = mStatement.executeQuery();
+		ArrayList<DVD> dvdList = new ArrayList<>();
+		while(rSet.next()) {
+			DVD dvd = new DVD();
+			dvd.setDvdId(rSet.getInt("DVDID"));
+			dvd.setDvdName(rSet.getString("DVDNAME"));
+			dvdList.add(dvd);
+		}
+		if(dvdList.size()!=0) {
+			return dvdList;
+		}
+		return null;
 	}
 
 }
