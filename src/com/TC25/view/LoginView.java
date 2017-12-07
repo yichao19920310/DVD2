@@ -16,10 +16,16 @@ public class LoginView extends View{
 		String userPwd = iT.getString();
 		
 		
-		if(ub.userLogin(userAcc, userPwd) && UserBizImpl.mUser.getUserStatus() == 1) {
+		if(ub.userLogin(userAcc, userPwd) && UserBizImpl.mUser.getUserStatus() != 3) {
 			//--登录成功
 			System.out.println("登录成功!");
-			mView = new UserMenuView();
+			if(ub.checkUserStatus()) {
+				mView = new UserMenuView();
+			}else {
+				System.out.println("您有逾期DVD未归还,已被列为黑户,请尽快归还!");
+				mView = new RetuDvdView();
+			}
+			
 		}else {
 			//--登录失败
 			System.out.println("登录失败!");
@@ -29,6 +35,7 @@ public class LoginView extends View{
 		return mView;
 	}
 
+	
 	
 	
 	

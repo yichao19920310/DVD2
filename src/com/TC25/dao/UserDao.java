@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.TC25.bean.DVD;
+import com.TC25.bean.LendRecord;
 import com.TC25.bean.User;
 
 //--数据库操作. 增删改查代码是写在这里的.
@@ -42,7 +43,7 @@ public interface UserDao {
 	 */  
 	public boolean lendDvd(int id) throws SQLException;
 
-	public ArrayList<DVD> getDvdByUser() throws SQLException;
+	public ArrayList<LendRecord> getLrByUser() throws SQLException;
 
 	/**  
 	 * @Title: RetuDvd  
@@ -71,6 +72,15 @@ public interface UserDao {
 	 * @throws  
 	 */  
 	public boolean subDvd(int id) throws SQLException;
+
+	/**  
+	 * @Title: changeUserStatus  
+	 * @Description: TODO(这里用一句话描述这个方法的作用)  
+	 * @param @param i    参数  
+	 * @return void    返回类型  
+	 * @throws  
+	 */  
+	public boolean changeUserStatus(int i) throws SQLException;
 
 
 }

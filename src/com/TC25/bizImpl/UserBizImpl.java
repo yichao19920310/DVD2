@@ -1,11 +1,13 @@
 package com.TC25.bizImpl;
 
+import java.util.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.TC25.bean.DVD;
+import com.TC25.bean.LendRecord;
 import com.TC25.bean.User;
 import com.TC25.biz.UserBiz;
 import com.TC25.dao.UserDao;
@@ -150,16 +152,16 @@ public class UserBizImpl implements UserBiz {
 	}
 	@Override
 	public boolean checkReturnableDvd() {
-		ArrayList<DVD> dvdList = null;
+		ArrayList<LendRecord> lrList = null;
 		try {
-			dvdList = ud.getDvdByUser();
+			lrList = ud.getLrByUser();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(dvdList != null) {
-			for (DVD dvd : dvdList) {
-				System.out.println("dvdId:"+dvd.getDvdId()+"\tdvdName:"+dvd.getDvdName());
+		if(lrList != null) {
+			for (LendRecord lr : lrList) {
+				System.out.println("dvdId:"+lr.getDvdId()+"\tdvdName:"+lr.getDvdName()+"\t最晚归还期限:"+lr.getRetuDate());
 			}
 		}else {
 			return false;
@@ -168,17 +170,17 @@ public class UserBizImpl implements UserBiz {
 	}
 	@Override
 	public boolean RetuDvdById(int id) {
-		ArrayList<DVD> dvdList = null;
+		ArrayList<LendRecord> lrList = null;
 		boolean b = false;
 		try {
-			dvdList = ud.getDvdByUser();
+			lrList = ud.getLrByUser();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(dvdList != null) {
-			for (DVD dvd : dvdList) {
-				if(id == dvd.getDvdId()) {
+		if(lrList != null) {
+			for (LendRecord lr : lrList) {
+				if(id == lr.getDvdId()) {
 					try {
 						b = ud.RetuDvd(id);
 						break;
@@ -233,12 +235,50 @@ public class UserBizImpl implements UserBiz {
 		}
 		return b;
 	}
+	
+	/* (非 Javadoc)  
+	 * <p>Title: CheckUserStatus</p>  
+	 * <p>Description: </p>  
+	 * @return  
+	 * @see com.TC25.biz.UserBiz#CheckUserStatus()  
+	 */  
 	@Override
 	public boolean checkUserStatus() {
-		if(mUser.getUserStatus()==1) {
-			return true;
+		ArrayList<LendRecord> lrList = null;
+		try {
+			lrList = ud.getLrByUser();
+			if(lrList == null && mUser.getUserStatus() == 1) {
+				return true;
+			}else if(lrList == null && mUser.getUserStatus() == 2) {
+				ud.changeUserStatus(1);
+				return true;
+			}else if(lrList != null && mUser.getUserStatus() ==1) {
+				Date now = new Date();
+				for (LendRecord lr : lrList) {
+					if(lr.getRetuDate().before(now)) {
+						ud.changeUserStatus(2);
+						return false;
+					}
+				}
+				
+			}else {
+				Date now = new Date();
+				for (LendRecord lr : lrList) {
+					if(lr.getRetuDate().before(now)) {
+						return false;
+					}
+					
+				}
+				ud.changeUserStatus(1);
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return false;
+		
+		return true;
 	}
 	
 	

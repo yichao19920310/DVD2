@@ -80,4 +80,5 @@ public interface UserBiz {
 
 	public boolean checkUserStatus();
 
+
 }

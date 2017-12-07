@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.TC25.bean.DVD;
+import com.TC25.bean.LendRecord;
 import com.TC25.bean.User;
 import com.TC25.bizImpl.UserBizImpl;
 import com.TC25.dao.UserDao;
@@ -145,9 +146,9 @@ public class UserDaoImpl implements UserDao {
 		if(0 == mStatement.executeUpdate()) {
 			return false;
 		}
-		String sql2 = "insert into LendRecordList (lrId,lrNumber,DVDId,DVDName,LendDate,UserID)"
+		String sql2 = "insert into LendRecordList (lrId,lrNumber,DVDId,DVDName,LendDate,RetuDate,UserID)"
 				+ " values(lrid_seq.nextval,'AA'|| (substr(cast(dbms_random.value as varchar2(50)),3,4))"
-				+ "||(lpad(cast(lrid_seq.currval as varchar2(50)),4,0)),?,(select dvdname from dvdlist where dvdid = ?),SYSDATE,?) ";
+				+ "||(lpad(cast(lrid_seq.currval as varchar2(50)),3,0)),?,(select dvdname from dvdlist where dvdid = ?),SYSDATE,SYSDATE+7,?) ";
 		mStatement = mConnection.prepareStatement(sql2);
 		mStatement.setInt(1, id);
 		mStatement.setInt(2, id);
@@ -160,21 +161,27 @@ public class UserDaoImpl implements UserDao {
 
 
 	@Override
-	public ArrayList<DVD> getDvdByUser() throws SQLException {
-		String sql = "select l.dvdid,l.dvdname from LENDRECORDLIST l " 
-				+"INNER JOIN userlist u on u.userid = l.USERID and u.userid = ? and l.lrstatus = 0 ";
+	public ArrayList<LendRecord> getLrByUser() throws SQLException {
+		String sql = "select * from LENDRECORDLIST " 
+				+"where userid = ? and lrstatus = 0 ";
 		mStatement = mConnection.prepareStatement(sql);
 		mStatement.setInt(1, UserBizImpl.mUser.getUserId());
 		rSet = mStatement.executeQuery();
-		ArrayList<DVD> dvdList = new ArrayList<>();
+		ArrayList<LendRecord> lrList = new ArrayList<>();
 		while(rSet.next()) {
-			DVD dvd = new DVD();
-			dvd.setDvdId(rSet.getInt("DVDID"));
-			dvd.setDvdName(rSet.getString("DVDNAME"));
-			dvdList.add(dvd);
+			LendRecord lr = new LendRecord();
+			lr.setDvdId(rSet.getInt("DVDID"));
+			lr.setDvdName(rSet.getString("DVDNAME"));
+			lr.setLendDate(rSet.getDate("LENDDATE"));
+			lr.setRetuDate(rSet.getDate("RETUDATE"));
+			lr.setLrId(rSet.getInt("LRID"));
+			lr.setLrNumber(rSet.getString("LRNUMBER"));
+			lr.setLrStatus(rSet.getInt("LRSTATUS"));
+			lr.setUserId(rSet.getInt("USERID"));
+			lrList.add(lr);
 		}
-		if(dvdList.size()!=0) {
-			return dvdList;
+		if(lrList.size()!=0) {
+			return lrList;
 		}
 		return null;
 	}
@@ -190,7 +197,7 @@ public class UserDaoImpl implements UserDao {
 	 */  
 	@Override
 	public boolean RetuDvd(int id) throws SQLException {
-		String sql1 = "update dvdlist set dvdStatus = 1 where dvdid = ?";
+		String sql1 = "update dvdlist set dvdStatus = 1 where dvdid = ? and dvdStatus = 2";
 		mStatement = mConnection.prepareStatement(sql1);
 		mStatement.setInt(1, id);
 		if(0 == mStatement.executeUpdate()) {
@@ -239,6 +246,27 @@ public class UserDaoImpl implements UserDao {
 		String sql = "update dvdlist set dvdstatus = 3 where dvdid = ?";
 		mStatement = mConnection.prepareStatement(sql);
 		mStatement.setInt(1, id);
+		if(0 == mStatement.executeUpdate()) {
+			return false;
+		}
+		return true;
+	}
+
+
+	/* (·Ç Javadoc)  
+	 * <p>Title: changeUserStatus</p>  
+	 * <p>Description: </p>  
+	 * @param i
+	 * @return
+	 * @throws SQLException  
+	 * @see com.TC25.dao.UserDao#changeUserStatus(int)  
+	 */  
+	@Override
+	public boolean changeUserStatus(int status) throws SQLException {
+		String sql = "update userlist set userstatus = ? where userid = ?";
+		mStatement = mConnection.prepareStatement(sql);
+		mStatement.setInt(1, status);
+		mStatement.setInt(2, UserBizImpl.mUser.getUserId());
 		if(0 == mStatement.executeUpdate()) {
 			return false;
 		}
