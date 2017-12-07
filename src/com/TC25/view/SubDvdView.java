@@ -19,7 +19,7 @@ import com.TC25.bean.DVD;
  * @date 2017年12月6日  
  *    
  */
-public class subDvdView extends View {
+public class SubDvdView extends View {
 
 	/* (非 Javadoc)  
 	 * <p>Title: showView</p>  

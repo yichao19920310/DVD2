@@ -9,6 +9,13 @@ public class LendDvdView extends View {
 	@Override
 	public View showView() {
 		System.out.println("=====>>>借出DVD");
+		if(ub.checkUserStatus()) {
+			
+		}else {
+			System.out.println("您当前用户状态是黑户,仍有逾期DVD未归还,无法再借,请先归还DVD!");
+			return mView = new UserMenuView();
+		}
+		
 		System.out.println("以下是当前可借DVD列表:");
 		ArrayList<DVD> dvdList = ub.showDvd(2);
 		System.out.println("请输入要借出的DVDID:");

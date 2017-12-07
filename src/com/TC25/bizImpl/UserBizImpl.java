@@ -233,6 +233,13 @@ public class UserBizImpl implements UserBiz {
 		}
 		return b;
 	}
+	@Override
+	public boolean checkUserStatus() {
+		if(mUser.getUserStatus()==1) {
+			return true;
+		}
+		return false;
+	}
 	
 	
 

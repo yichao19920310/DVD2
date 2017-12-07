@@ -32,10 +32,13 @@ public class AdminMenuView extends View {
 		int choose = iT.getInt();
 		switch(choose) {
 		case 1: 
-			mView = new addDvdView();
+			mView = new AddDvdView();
 			break;
 		case 2: 
-			mView = new subDvdView();
+			mView = new SubDvdView();
+			break;
+		case 3: 
+			mView = new ShowDvdView();
 			break;
 		case 9: 
 			UserBizImpl.mUser = null;
@@ -61,6 +64,7 @@ public class AdminMenuView extends View {
 	private void showMenu() {
 		System.out.println("1.上架DVD");
 		System.out.println("2.下架DVD");
+		System.out.println("3.查看DVD");
 		System.out.println("9.退出管理员");
 		System.out.println("0.退出系统");
 		

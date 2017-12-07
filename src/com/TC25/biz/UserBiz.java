@@ -78,4 +78,6 @@ public interface UserBiz {
 	 */  
 	public boolean subDvd(int id);
 
+	public boolean checkUserStatus();
+
 }
