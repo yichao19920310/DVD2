@@ -251,12 +251,14 @@ public class UserBizImpl implements UserBiz {
 				return true;
 			}else if(lrList == null && mUser.getUserStatus() == 2) {
 				ud.changeUserStatus(1);
+				mUser = ud.getUserByUserAcc(mUser.getUserAcc());
 				return true;
-			}else if(lrList != null && mUser.getUserStatus() ==1) {
+			}else if(lrList != null && mUser.getUserStatus() == 1) {
 				Date now = new Date();
 				for (LendRecord lr : lrList) {
 					if(lr.getRetuDate().before(now)) {
 						ud.changeUserStatus(2);
+						mUser = ud.getUserByUserAcc(mUser.getUserAcc());
 						return false;
 					}
 				}
@@ -270,6 +272,7 @@ public class UserBizImpl implements UserBiz {
 					
 				}
 				ud.changeUserStatus(1);
+				mUser = ud.getUserByUserAcc(mUser.getUserAcc());
 				return true;
 			}
 			
